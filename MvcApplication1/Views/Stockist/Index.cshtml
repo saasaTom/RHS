@@ -1,0 +1,33 @@
+﻿@model List<RobynHandMadeSoap.Models.Stockist_Locations>
+
+@{
+    ViewBag.Title = "Stockists - Robyns Handmade Soap can be found all over Ireland";
+}
+
+    <link rel="stylesheet" href="~/Content/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="leaflet.ie.css" /><![endif]-->
+    <!--script src="/Scripts/leaflet.js"><--/script-->
+    <!--script src="/Scripts/wax.leaf.min.js"><--/script-->
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<section>
+    <p>Check out the wonderful places where you can find my soap all over Ireland. I am working on getting it out there, if you are interested in selling my soap in your shop please email me for a wholesale pricelist.</p>
+</section>
+
+<div contenteditable="true">
+@{foreach (RobynHandMadeSoap.Models.Stockist_Locations sl in Model) 
+    {
+        <h3>@sl.Name</h3>
+            <ul class="stockists_ul">
+                @{foreach (RobynHandMadeSoap.Models.Stockist s in sl.Stockist_List )
+                  {
+                      <li>@{if (@s.Link_Address != null) {<a href="@s.Link_Address" > @s.Name</a> } else{@s.Name}}</li>
+                  }
+                }
+            </ul>
+    }
+}
+</div>

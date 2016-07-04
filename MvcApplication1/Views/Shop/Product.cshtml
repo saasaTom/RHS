@@ -1,0 +1,182 @@
+﻿@model RobynHandMadeSoap.Models.ProductAndDetail
+
+@{
+    ViewBag.Title = "Product";
+}
+
+
+
+
+@*
+
+<script type="text/javascript">
+    $(function() {
+
+        $("form div").append('<div class="inc button">+</div><div class="dec button">-</div>');
+
+        $(".button").click(function() {
+            var $button = $(this);
+            var oldValue = $button.parent().find("input").val();
+    
+            if ($button.text() == "+") {
+                var newVal = parseFloat(oldValue) + 1;
+                // AJAX save would go here
+            } else {
+                // Don't allow decrementing below zero
+                if (oldValue >= 1) {
+                    var newVal = parseFloat(oldValue) - 1;
+                    // AJAX save would go here
+                }
+            }
+            $button.parent().find("input").val(newVal);
+        });
+    });
+</script>*@
+
+@if (Model == null)
+{
+<hgroup class="title">
+    <h2>There has been a problem With this product. If you continue to get this problem please contact info@robynshandmadesoap.com.</h2>
+</hgroup>
+}
+else
+{
+    
+<hgroup class="title">
+    <h2>@Model.product.Name </h2>
+</hgroup>
+<section>
+    <div class="pdImgSect">
+        <a class="pdImgLink" href="#" title="@Model.product.Name" >
+            <img src="@Model.product.Image_Uri" width="340" height="270" />
+        </a>
+    </div>
+
+    <div class="pdDescSect">
+        <p style="margin-top:0;">
+            @Html.Raw(Model.product_detail.Long_DescriptionHTML)
+        </p>
+        <div>
+            <div class="pdPriceSect">
+                Price:  &#8364;@Model.product_detail.calculatePrice(User.IsInRole("Merchant"))
+            </div>
+
+            <!-- Add to Cart Button -->
+            @{ if (Model.product_detail.Stock_Quantity > 0)
+               {
+            <div class="pdPPSect">
+                <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="@Model.product.PP_Button(User.IsInRole("Merchant"))">
+                    <!-- Continue shopping on the main Shop Page -->  
+                    <input type="hidden" name="shopping_url" value="@Request.Url.Scheme://@Request.Url.Host/Shop">  
+                    <div>
+                        <div style="float: left;width: 140px;">
+                            <input type="hidden" name="no_note" value="0">
+                            <label for="quantity">Quantity</label>
+                            <select name="quantity">
+                                @for (var i = 1; i <= 20; i++)
+                                {
+
+                                <option value="@i.ToString()">@i.ToString()</option>
+                                }
+                            </select>
+                        </div>
+                        <div  style="float: left;width: 130px;">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                        </div>
+                    </div>
+                
+                </form>
+
+                 <!-- View Cart Button -->
+                <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIG1QYJKoZIhvcNAQcEoIIGxjCCBsICAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYBFTg0xecmrfmbCFFbP9w/KQ4Gq67YJKx0/FfdmgYWlBzDdSD2dXb2znMQgsv3epqWiUPaSsyQDsYkgYQaZ5XpC8l7odteIsK7mHt1yAf9bcuT3cLNqLDWNFXkFpMd21g8NIq3Wx7jxEkDugKRrbC6F59yOmaeHKcwOls968yL6uzELMAkGBSsOAwIaBQAwUwYJKoZIhvcNAQcBMBQGCCqGSIb3DQMHBAhIIMxv0pf+EIAwi39WMu16SlvBtDyZpOEX6bQPuIabMH2iSzX/f1Xft0OBnoUiM7AIxK4HHG6GI2rkoIIDhzCCA4MwggLsoAMCAQICAQAwDQYJKoZIhvcNAQEFBQAwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMB4XDTA0MDIxMzEwMTMxNVoXDTM1MDIxMzEwMTMxNVowgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBR07d/ETMS1ycjtkpkvjXZe9k+6CieLuLsPumsJ7QC1odNz3sJiCbs2wC0nLE0uLGaEtXynIgRqIddYCHx88pb5HTXv4SZeuv0Rqq4+axW9PLAAATU8w04qqjaSXgbGLP3NmohqM6bV9kZZwZLR/klDaQGo1u9uDb9lr4Yn+rBQIDAQABo4HuMIHrMB0GA1UdDgQWBBSWn3y7xm8XvVk/UtcKG+wQ1mSUazCBuwYDVR0jBIGzMIGwgBSWn3y7xm8XvVk/UtcKG+wQ1mSUa6GBlKSBkTCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb22CAQAwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQCBXzpWmoBa5e9fo6ujionW1hUhPkOBakTr3YCDjbYfvJEiv/2P+IobhOGJr85+XHhN0v4gUkEDI8r2/rNk1m0GA8HKddvTjyGw/XqXa+LSTlDYkqI8OwR8GEYj4efEtcRpRYBxV8KxAW93YDWzFGvruKnnLbDAF6VR5w/cCMn5hzGCAZowggGWAgEBMIGUMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTIwODE0MTcxMTI3WjAjBgkqhkiG9w0BCQQxFgQU8mqrxcLgBEovvdIO4cKqWJZmg3YwDQYJKoZIhvcNAQEBBQAEgYBf0js2G9xlNyPz2heeuk9WnvBnb2MzPpEt0Ik011rf61zsiiyhlTec5CwObarl20zbsaf0MzMJtFw9Ny2Zu3nVuEeMvJBs6hzKvwfqryoUW/yf72LN0wJyBNonP6NHF69xvqFFkhX7QNK/s9J+Fm+NkWqXEihJeOsRduZq2xinJw==-----END PKCS7-----
+                    ">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_viewcart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            </div>
+              }else{<!-- SOLD OUT -->
+            <div class="sold_out">SOLD OUT</div>
+            }
+            }
+        </div>
+    </div>
+
+</section>
+}
+
+
+
+
+@*            <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_cart">
+                <input type="hidden" name="business" value="bryth821@hotmail.com">
+                <input type="hidden" name="lc" value="IE">
+                <input type="hidden" name="item_name" value="Lemon soap">
+                <input type="hidden" name="item_number" value="2">
+                <input type="hidden" name="amount" value="4.50">
+                <input type="hidden" name="currency_code" value="EUR">
+                <input type="hidden" name="button_subtype" value="products">
+                <div style="display:block">
+                    <div style="float: left;width: 240px;">
+                        <input type="hidden" name="no_note" value="0">
+                            <div id="quant" style ="overflow: hidden; margin: 0 0 5px 0;">
+                                <label for="add" style =" display: block; float: left; text-align: right; padding: 5px 10px 0 0; width: 90px; font-size: 10pt">Quantity</label>
+                                <input type="text" name="add" value="1" style="float: left; width: 40px;  padding: 3px 0 0 0; text-align: center; font-size: 10pt " >
+                            </div>
+                    </div>
+                    <div style="float: left;width: 100px;">
+                        <input type="hidden" name="bn" value="PP-ShopCartBF:btn_cart_LG.gif:NonHostedGuest">
+                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                    </div>
+                </div>
+            </form>*@
+
+@*            <script type="text/javascript">
+                $(function() {
+
+                    $("form div#quant").append('<div class="inc button" style="float:right;width:30px;">+</div><div class="dec button"  style="float:right;width:30px;">-</div>');
+
+                    $(".button").click(function() {
+                        var $button = $(this);
+                        var oldValue = $button.parent().find("input").val();
+    
+                        if ($button.text() == "+") {
+                            var newVal = parseFloat(oldValue) + 1;
+                            // AJAX save would go here
+                        } else {
+                            // Don't allow decrementing below zero
+                            if (oldValue >= 1) {
+                                var newVal = parseFloat(oldValue) - 1;
+                                // AJAX save would go here
+                            }
+                        }
+                        $button.parent().find("input").val(newVal);
+                    });
+                });
+            </script>*@
+
+
+
+    
+
+@*            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="top: 125px;left:126px;position: absolute">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="bryth821@hotmail.com">
+                <input type="hidden" name="lc" value="IE">
+                <input type="hidden" name="item_name" value="Man Soap">
+                <input type="hidden" name="item_number" value="1">
+                <input type="hidden" name="amount" value="5.50">
+                <input type="hidden" name="currency_code" value="EUR">
+                <input type="hidden" name="button_subtype" value="services">
+                <input type="hidden" name="no_note" value="0">
+                <input type="hidden" name="tax_rate" value="0.000">
+                <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/x-click-but9.gif" style="width: 50px;border:0"  name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>*@

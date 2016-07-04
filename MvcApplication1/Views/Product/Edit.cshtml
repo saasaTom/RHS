@@ -1,0 +1,47 @@
+﻿@model RobynHandMadeSoap.Product
+
+<tr @if (Model != null) {
+    @:data-pkey="@Model.Id"
+}>
+    <td>
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </td>
+      @Html.EditorFor(model => model.Image_Uri)
+@*    <td style="display: none;" class="DBImageURIText">
+        @Html.EditorFor(model => model.Image_Uri)
+        @Html.ValidationMessageFor(model => model.Image_Uri)
+    </td>
+    <td style="width:190px;position: relative;display: block;">
+        <div id="dropbox" class="dropbox" style="width: 95px;height:65px; font-size: 14pt; margin-left: 5px; margin-top: 20px; border:2pt solid grey; float: left;">
+            <span id="droplabel" style="top: 0;">Drop file here...</span>
+        </div>
+        <img id="preview" alt="[ preview will display here ]" width="80" height="65"  style="font-size:10pt; margin-top: 20px; border:2pt solid grey;float: right;" />
+    </td>*@
+    <td>
+        @Html.EditorFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+        <div id="dropdownDescDiv" style="display: none;position:relative;">
+            <textarea style="border: 1pt solid black;" rows="7" cols="70" wrap="hard" name="desc"/>
+        </div>
+    </td>
+    <td>
+        @Html.DropDownList("Category_Id", String.Empty)
+        @Html.ValidationMessageFor(model => model.Category_Id)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Product_Code)
+        @Html.ValidationMessageFor(model => model.Product_Code)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.PP_Hosted_Button_Id)
+        @Html.ValidationMessageFor(model => model.PP_Hosted_Button_Id)
+    </td>
+    <td>
+@if (ViewContext.RouteData.Values["Action"].ToString() == "Edit") {
+        <button class="editRow">Save</button><button class="cancelEditRow">Cancel</button>
+} else {
+        <button class="createRow">Create</button><button class="cancelCreateRow">Cancel</button>
+}
+    </td>
+</tr>

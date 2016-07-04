@@ -1,0 +1,25 @@
+﻿@model List<RobynHandMadeSoap.Models.ProductCategories>
+
+<div class="homeShopDiv">
+    <ul class="prodUL">
+    @foreach (var cat in Model)
+    {
+        <li class="HomeProducts">
+            <a style="display: block;text-decoration: none;margin: 0;padding: 0;" href="/Shop" title="@cat.Name">
+
+                <img src="@cat.Image_Uri" width="280" height="290" />
+
+                <div style="margin-top: 5px; padding:0; position: relative; display:block">
+				    <div class="ProdName">
+                        @cat.Name
+				    </div>
+
+                   @*<div style="display:block;white-space: nowrap; overflow:hidden;text-overflow:ellipsis; width: 170px; height:30px; margin:0; padding:0;">
+                        @prod.Description you would not know it at all
+				    </div>*@
+			    </div>
+            </a>
+        </li>
+    }
+    </ul>
+</div>

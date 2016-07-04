@@ -1,0 +1,12 @@
+﻿@model String
+
+<td style="display: none;" class="DBImageURIText">
+    @Html.TextBoxFor(x => x)
+    @Html.ValidationMessageFor(x => x)
+</td>
+<td style="width:190px;position: relative;display: block;">
+    <div id="dropbox" class="dropbox" style="width: 95px;height:65px; font-size: 14pt; margin-left: 5px; margin-top: 20px; border:2pt solid grey; float: left;">
+        <span id="droplabel" style="top: 0;">Drop file here...</span>
+    </div>
+    <img id="preview" src="@Model" alt="[ preview will display here ]" width="80" height="65"  style="font-size:10pt; margin-top: 20px; border:2pt solid grey;float: right;" />
+</td>

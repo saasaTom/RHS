@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" class="headPage" >
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <meta name="keywords" content="Soap, Hand Made, Hand-Made,Handmade, Irish, Ireland, Ballymaloe, Robyn Allen, Made in Ireland, Natural, Skin care.http://www.robynshandmadesoap.com" />
+        <meta name="author" content="Thomas Bryant" />
+        <meta name="description" content="Soap made by Robyn Allen in Ballycotton from the most basic ingredients with 100% pure essential oils that smell delicious and are moisturising, soft and great for sensitive skin." />
+        <meta property="og:image" content="http://www.robynshandmadesoap.com/Images/Main.png"/>
+        <meta property="og:title" content="Robyn's Handmade Soap"/>
+        <meta property="og:site_name" content="Robyn's Handmade Soap"/>
+        <meta property="og:description" content="Soap made by Robyn Allen in Ballycotton from the most basic ingredients with 100% pure essential oils that smell delicious and are moisturising, soft and great for sensitive skin." />
+        <meta property="og:type" content="website" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" rel="stylesheet" type="text/css" />
+        <link href="~/Content/site.css" rel="stylesheet" type="text/css" />
+        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" rel="stylesheet" type="text/css" />
+        <meta name="viewport" content="width=device-width" />
+        <script type="text/javascript">
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-33306588-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function () {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+        </script>
+    </head>
+    <body>
+            <div id="fb-root"></div>
+            <script async>(function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <header>
+            <div class="content-wrapper">
+                <div style="height: 98px;position:relative;">
+                    <!--img class="headImg" src="/Images/robyns_handmade_soap_header.jpg" height="98" alt="Robyns Hand Made Soap"/ -->
+                    <img class="handmade_image float-left" src="~/Images/Handmade-in-Ireland-Logo.jpg" />
+                    <img class="robin_image" src="/Images/Robin.png"/>
+                    
+                </div>
+                <div class="header">
+                    <h1>ROBYN'S HANDMADE SOAP</h1>
+                </div>
+
+                <div class="TitleContact">
+                    Ph: <a class="noLink" href="Tel:+3530860530280">+353 (0)86 053 0280</a> | Email: <a class="noLink" href="Mailto:info@robynshandmadesoap.com">info@robynshandmadesoap.com</a> | Made in East Cork, Ireland
+                </div>
+            </div>
+            
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Ingredients", "Ingredients", "Home")</li>
+                            <li>@Html.ActionLink("Shop", "Index","Shop")</li>
+                            <li>@Html.ActionLink("Gallery", "Gallery","Home")</li>
+                            <li>@Html.ActionLink("Stockists", "Stockists", "Home")</li>
+                            <li>@Html.ActionLink("Feedback", "Feedback", "Home")</li>
+                            <li style="border-right: none">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </nav>
+            <div>
+
+            </div>
+        </header>
+
+        <div id="body">
+           @* @RenderSection("featured", required: false)*@
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+            @{if (User.Identity.IsAuthenticated) {
+                  <div class="Overlay">
+                      <div class="float-left">Welcome back! @User.Identity.Name</div>
+                      <div class="float-left authBoxLink">Shop</div>
+                      <div class="float-left authBoxLink">Cart</div>
+
+                  </div>
+                }
+            }
+        </div>
+
+
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p style="margin-left: 20px; color:  #99225f">Designed by Robyn Allen &copy; 2012</p>
+                </div>
+                <div class="float-right">
+                    <ul id="social">
+                        <li style="float: left">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="RobynsHandMadeSoap" data-related="RobynsHandMadeSoap" data-hashtags="HandMadeSoap" data-dnt="true">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+                        </li>
+                        <li style="float: right">    
+                            <div class="fb-like" data-href="http://www.robynshandmadesoap.com" data-send="false" data-width="200" data-show-faces="false"></div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

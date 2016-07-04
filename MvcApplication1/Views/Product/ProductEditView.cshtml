@@ -1,0 +1,285 @@
+@model RobynHandMadeSoap.Models.ProductAndDetail
+<script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
+<script src="~/Scripts/ImageUpload.js"></script>
+@if (Model == null)
+
+{
+<hgroup class="title">
+    <h2>There has been a problem With this product. If you continue to get this problem please contact info@robynshandmadesoap.com.</h2>
+</hgroup>
+}
+else {
+    //Interchangeable Product and Product Detail data section.
+    //Will be replaced on Save or Data Validation Error
+    Html.RenderPartial("ProductEditSection", Model);
+  
+    <section style="margin-top: 40px; text-align: center; font-size: 16pt; color: grey; float: right;clear:both;">
+        <div class="hidden changed">Product Changed</div>
+        @{if (Model.product.Id != 0){
+            <a id="ProductSave" class="NiceButton ProductEdit" href="#" >
+                <span>Save</span>
+            </a>
+        }else{
+            <a id="ProductCreate" class="NiceButton ProductEdit" href="#" >
+                <span>Create</span>
+            </a>
+        }
+        }
+    </section>
+    
+    <div class="Overlay">
+        <div style="width: 130px;float: left;"></div>
+        <div style="width: 118px;float: left;margin-left: 10px;"></div>
+    </div>
+    
+    
+    
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#ProductSave').click(function() {saveEdit(@Model.product.Id); return false;});
+        $('#ProductCreate').click(function() {saveNew(@Model.product.Id); return false;});
+        $('.On').click(function() {$('.Off').removeClass('active');$(this).addClass('active'); return false;});
+        $('.Off').click(function() {$('.On').removeClass('active');$(this).addClass('active'); return false;});
+        var spinner = '<img id="AjaxSpinner" src="/Content/Images/ajax-loader.gif"/>'
+
+        var editableDivClass = {
+            //Set Up Editable Areas to show changes by highlighting the borders.
+            //Only highlight a change if different to the original entry
+            editable: $('[contenteditable]'),
+            //
+            CSSOn: {name: 'border', value: '2px solid #AA445F'},
+            CSSOff: {name: 'border', value: '2px dotted blue'},
+            //
+            //Set up the Change Event to fire for editable areas when an action occurs that might cause a change in text i.e. Focus, Paste e.t.c
+            setupChangeEvent: function() {
+                this.editable.live('focus', function () {
+                    var $this = $(this);
+                    if (typeof $this.data('before') == 'undefined') {
+                        $this.data('before', $this.html());
+                    }
+                    return $this;
+                }).live('blur keyup paste', function () {
+                    var $this = $(this);
+                    //if ($this.data('before') !== $this.html()) {
+                    //$this.data('before', $this.html());
+                    $this.trigger('change');
+                    //}
+                    return $this;
+                });
+            },
+            //
+            //Check to see if data has changed, if so highlight this to user via border color changed
+            setupChangeActions: function(CSSOn, CSSOff) {
+                this.editable.live('change', function () {
+                    var editedItem = $(this);
+                    if (editedItem.data('before').replace(/<br>$/, '') !== editedItem.html().replace(/<br>$/, '')) {
+                        editedItem.css(CSSOn.name, CSSOn.value);
+                        setUnloadWarning();
+                    } else {
+                        editedItem.css(CSSOff.name, CSSOff.value);
+                        clearUnloadWarning();
+                    }
+                });
+            },
+            //Setup
+            setup: function(){
+                this.setupChangeEvent();
+                this.setupChangeActions(this.CSSOn,this.CSSOff);
+            }
+        }
+
+        editableDivClass.setup();
+
+        ////Set Up Editable Areas to show changes by highlighting the borders.
+        ////Only highlight a change if different to the original entry
+        //var editable = $('[contenteditable]');
+        
+        ////Set up the Change Event to fire for editable areas when an action occurs that might cause a change in text i.e. Focus, Paste e.t.c
+        //editable.live('focus', function () {
+        //    var $this = $(this);
+        //    if (typeof $this.data('before') == 'undefined') {
+        //        $this.data('before', $this.html());
+        //    }
+        //    return $this;
+        //}).live('blur keyup paste', function () {
+        //    var $this = $(this);
+        //    //if ($this.data('before') !== $this.html()) {
+        //        //$this.data('before', $this.html());
+        //    $this.trigger('change');
+        //    //}
+        //    return $this;
+        //});
+
+        ////Check to see if data has changed, if so highlight this to user via border color changed
+        //editable.live('change', function () {
+        //    var editedItem = $(this);
+        //    if (editedItem.data('before').replace(/<br>$/, '') !== editedItem.html().replace(/<br>$/, '')) {
+        //        editedItem.css('border', '2px solid #AA445F');
+        //        setUnloadWarning();
+        //    } else {
+        //        editedItem.css('border', '2px dotted blue');
+        //        clearUnloadWarning();
+        //    }
+        //});
+
+        //Find parameters from HTML for creating AJAX MVC post parameters
+        function getPostParams() {
+            //Basic Divs/HTML elements
+            var first_set =  $('[data-name]').filter(':not(:checkbox), :checked').map(function () {
+                var input = $(this);
+                return { name: input.attr('data-name'), value: freeTextToPost(input.html().replace(/<br>$/, '').replace(/<br>/g,'[br]')) };
+            }).get();
+            //Form Input elements
+            var second_set = $('[data-name-val]').filter(':not(:checkbox), :checked').map(function () {
+                var input = $(this);
+                return { name: input.attr('data-name-val'), value: freeTextToPost(input.val().replace(/<br>$/, '').replace(/<br>/g,'[br]')) };
+            }).get();
+            
+            //Check Boxes - Stock Quantity
+            var third_set = $('[data-name-check].active').map(function () {
+                var input = $(this);
+                //Stock value of 0 is Out of Stock.  100 is the default in stock amount.
+                //return { name: input.attr('data-name-check'), value: input.filter(':checked').val()?100:0 };
+                return { name: input.attr('data-name-check'), value: input.attr('data-val') };
+            }).get();
+            return first_set.concat(second_set).concat(third_set);
+        }
+
+        //Convert HTML tags <TAG> to a safe post version [TAG]
+        function freeTextToPost(textToConvert){
+            return textToConvert.replace(/<([^>]*)>/g,'[$1]');
+        }
+
+
+        //Hadle Data Change Warnings.
+        //When a change has been made unloadWarningSet = true warn the user when leaving the page or refreshing e.t.c
+        var unloadWarningSet = false;
+        //Called when no changes have been made, page refresh, data saved
+        function clearUnloadWarning() {
+            if (unloadWarningSet) {
+                unloadWarningSet = false;
+                $('.changed').hide();
+                $(window).unbind('beforeunload');
+            }
+        };
+
+        //Called when changes have been made
+        function setUnloadWarning() {
+            if (!unloadWarningSet) {
+                unloadWarningSet = true;
+                $('.changed').show();
+                $(window).bind('beforeunload', function() {
+                    return 'You have unsaved changes. Are you sure you want to leave?';
+                });
+            }
+        };
+
+        //Save Edited Products using Ajax to post changes and replace the editable section with our results
+        function saveEdit(id) {
+            var postParams = getPostParams();
+            //postParams.push({ name: 'Id', value: id });
+            postParams.push({ name: 'product.Category_Id', value: @Model.product.Category_Id});
+            var editableSection = $('#editableSection');
+            $(this).append(spinner);
+
+            $.post('@Html.Raw(Url.Action("Edit", new { id = "__ID__" }))'.replace(/__ID__/, id), postParams)
+                .always(function (){
+                    $('#AjaxSpinner').remove();
+                })
+                .success(function (newSection) {
+                    
+                    editableSection.replaceWith(newSection);
+                    clearUnloadWarning();
+
+                })
+                .fail(function () {
+                    alert("Nothing has been changed.  Please refresh page and try again");
+                    editableSection.addClass('error');
+                });
+        }
+
+        //Save New Products using Ajax to post changes and replace the editable section with our results
+        function saveNew(id) {
+            var postParams = getPostParams();
+            //postParams.push({ name: 'Id', value: id });
+            postParams.push({ name: 'product.Category_Id', value: @Model.product.Category_Id});
+            var editableSection = $('#editableSection');
+            $(this).append(spinner);
+            $.post('@Html.Raw(Url.Action("New", new { id = "__ID__" }))'.replace(/__ID__/, id), postParams)
+                .always(function (){
+                    $('#AjaxSpinner').remove();
+                })
+                .success(function (newSection) {
+                    editableSection.replaceWith(newSection);
+                    clearUnloadWarning();
+
+                })
+                .fail(function () {
+                    alert("Nothing has been saved.  Please fix any errors and try again");
+                    editableSection.addClass('error');
+                });
+        }
+
+        //Set up Droppable Image for editing
+
+        var imgUploadParams = {
+            parent: ".editableSection",
+            uriInputSelector: ".DBImageURIText",
+            previewSelector: $(".editableSection"),
+            imgPrefix: "",
+            useDynamicCache: false,
+            fileNameField: "Product Name",
+            postURL: "/Product/Upload/",
+            savePathRelative: "/Shop/",
+            imgWidth: 340,
+            imgHeight: 270,
+            savePathRelativeThumb: "/Shop/Thumb/",
+            imgThumbWidth: 170,
+            imgThumbHeight: 135,
+            imgDropped: new $.Deferred()
+        };
+        imgUploadParams.imgDropped.done(function(objectDropped){objectDropped.append(spinner);$('.ProductEdit').hide();});
+        //imgUploadParams.promise.done(function(){alert("SUCCESS");});
+        //imgUploadParams.promise.fail(function(){alert("FAIL");});
+        var productImageContainer = "editableSection";
+        setupDropable(productImageContainer,imgUploadParams)
+            .done(function(){$('#mainImage').attr("src",$('#pImageURI').val());})
+            .fail(imageDropFail(reason))
+            .always(imageDropFinished());
+
+
+        function imageDropFail(reason){
+            alert("The image upload failed because -" + reason);
+        };
+
+        //Cleanup after success or fail of Image Load
+        function imageDropFinished(){
+            $('#AjaxSpinner').remove();
+            $('.ProductEdit').show();
+
+            //Need to reset all the promises attached to the drop box.
+            imgUploadParams.imgDropped = new $.Deferred();
+            imgUploadParams.imgDropped.done(function(objectDropped){objectDropped.append(spinner);$('.ProductEdit').hide();});
+            resetPromise()
+                .done(function(){$('#mainImage').attr("src",$('#pImageURI').val());})
+                .fail(imageDropFail(reason))
+                .always(imageDropFinished());
+        };
+
+        function confirm(question) {
+            //var inputedData =  prompt ("type something!", "" );
+            if (confirm(question)) {
+                //alert ("Ok, you did type "+inputedData+"!");
+                return true
+            }
+            else {
+                //alert ("No, you did not type "+inputedData+", did you?  OK.  Guess ya did.");
+                return false;
+            }
+        }
+
+    });
+    </script>
+}

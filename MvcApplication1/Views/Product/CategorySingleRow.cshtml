@@ -1,0 +1,34 @@
+﻿@model RobynHandMadeSoap.Product_Categories
+     @Html.EditorFor(m => m)
+
+
+@* 
+
+<tr @if (Model != null) {
+    @:data-pkey="@Model.Id"
+}>
+            <td>
+                @Html.EditorFor(m => m.Name)
+                @Html.ValidationMessageFor(m => m.Name) 
+            </td>
+                @Html.EditorFor(m => m.Image_Uri)
+@            <td style="display:none" class="DBImageURIText">
+                @Html.EditorFor(m => m.Image_Uri)
+                @Html.ValidationMessageFor(m => m.Image_Uri)
+            </td>
+            <td style="width:200px;max-width: 200px;height:80px;position: relative;">
+                <div id="dropbox" class="dropbox" style="width: 95px;height: 65px;border:2pt solid grey;margin-left: 5px;position: absolute;margin-top: -40px;font-size: 14pt;"><span id="droplabel" style="top: 0;">Drop file here...</span></div>
+                <img id="preview" alt="[ preview will display here ]" width="80" height="65" style="font-size:10pt; border:2pt solid grey;margin-left: 105px;position: absolute;margin-top: -40px;" />
+            </td>@
+            <td>
+                @Html.EditorFor(m => m.Description)
+                @Html.ValidationMessageFor(m => m.Description)
+            </td>
+            <td>
+        @if (ViewContext.RouteData.Values["Action"].ToString() == "NewCategories") {
+                <button class="editRowCat">Save</button><button class="cancelEditRowCat">Cancel</button>
+        } else {
+                <button class="editRowCat">Save</button><button class="cancelEditRowCat">Cancel</button>
+        }
+            </td>
+</tr>*@

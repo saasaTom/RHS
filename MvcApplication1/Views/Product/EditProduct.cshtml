@@ -1,0 +1,236 @@
+﻿@model RobynHandMadeSoap.Models.Shop
+<script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
+@{
+    ViewBag.Title = "Shop";
+}
+<hgroup class="title">
+    <h2>Shop</h2>
+</hgroup>
+
+<!--MAIN SHOP LAYOUT -->
+<div style="position: relative;height: 100%;width: 100%;">
+    <div id="shop" class="ui-widget-content" style="width: 100%;height: 100%;top: 0;position: relative">
+        <section>
+           <!-- PRODUCT CATEGORY -->
+        @{ foreach (RobynHandMadeSoap.Models.ProductCategories pc in @Model.product_categories)
+           {
+               <section style="border-bottom: 1pt dashed #99225f; clear: both">
+                   <h3 id="@pc.Name" style="float: left;">@pc.Name</h3>
+                   <!-- DELETE CATEGORY -->
+                    <a  class="NiceButton ProductEdit deleteCategory" href="#" data-id="@pc.Id" style="float: right" title="Click to delete the category">
+                        <span>Delete</span>
+                    </a>
+                   <section>
+                        <!-- PRODUCTS -->
+                        <ul Class="ShopUL">
+                        @foreach (RobynHandMadeSoap.Models.ProductAndDetail prod in @pc.product_and_detail)
+                        {
+    
+                            <li class="ShopLI">
+                                <div class="prodImgDiv">
+                                    <a class="prodImg showButton"  href="@Url.Action("Product","Shop",new { id = @prod.product.Id })" title="Click to view @prod.product.Name as it appears in the onine shop" >
+                                        <img src="@prod.product.Image_Uri" width="170" height="135" alt="Click to View @prod.product.Name"/>
+                                    </a>
+                                </div>
+                                <div class="ShopProdInfo">
+		                            <div style="color: #666; margin-top:20px">
+                                        @prod.product.Name
+			                        </div>
+	                            </div>
+                                <div style="position: absolute;top: 0px; left: 0px;">
+                                    <!--EDIT PRODUCT -->
+                                    <a class="NiceButton ProductEdit hiddenButton showButton" href="@Url.Action("Edit","Product", new {id = @prod.product.Id})" title="Click to edit the product">
+                                        <span>Edit</span>
+                                    </a>
+                                    <!-- DELETE PRODUCT -->
+                                    <a class="NiceButton ProductDelete hiddenButton showButton" href="#" data-id="@prod.product.Id" title="Click to Delete the product">
+                                        <span>Delete</span>
+                                    </a>
+                                </div>
+            
+
+                            </li>
+    
+                        }
+                        </ul>
+                        <!-- NEW PRODUCT -->
+                        <div style="margin-left: 40px; display: inline-block">
+                            <a class="NiceButton ProductEdit" href="@Url.Action("New","Product", new {catId =pc.Id})" title="Click to Create a new product">
+                                <span>New</span>
+                            </a>
+                        </div>
+                    </section>
+                </section>
+           }
+        }
+        </section>
+        
+        <!-- NEW CATEGORY SECTION -->
+        <section id="newCategorySection" style="border-bottom: 1pt dashed #99225f; display: inline-block; margin-top: 10px;width: 100%">
+            <div>
+                <h3 id="newCategoryHeader" style="margin-top: 0;width: 30%;float: left;"></h3>
+                <!-- CREATE NEW CATEGORY -->
+                <a id="createNewCategory" class="NiceButton ProductEdit" href="#" " title="Click to Create a new category"><span>(....Click to Create a New Category.....)</span></a>
+                <!-- DELETE CATEGORY -->
+                <div>
+                <a id="deleteNewCategory" class="NiceButton ProductEdit deleteCategory hidden" href="#" data-id="" style="float: right;" title="Click to delete the category">
+                    <span>Cancel</span>
+                </a>
+                </div>
+           </div>
+            <div style="clear: both;">
+                <!-- NEW PRODUCT -->
+                <a id="newCatnewProd" class="NiceButton ProductEdit hidden" href="@Url.Action("New","Product", new {catId =-1})" style="float: left;" title="Click to Create a new product">
+                    <span>New</span>
+                </a>
+                <!-- div id="newCatnewProd hidden" style="margin-left: 40px;">
+                </!-->
+                <!-- SAVE CATEGORY -->
+                <a id="saveNewCategory" class="NiceButton ProductEdit hidden" href="#" style="float: left; margin: 0px 0 0 10px">
+                    <span>Save</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $('.ProductDelete').click(function () { deleteProduct($(this).attr('data-id'), $(this)); return false; });
+        $('#createNewCategory').click(function () { setupNewCategory($(this)); return false; });
+        $('.deleteCategory').click(function () { deleteCategory($(this).attr('data-id'), $(this)); return false; });
+        $('#saveNewCategory').click(function () { saveNewCategory($(this)); return false; });
+        $('.showButton').hover(function () { $(this).parent().parent().find('.NiceButton').removeClass('hiddenButton'); }, function () { $(this).parent().parent().find('.NiceButton').addClass('hiddenButton'); });
+
+        //Set up a new editable area to generate and save/delete a new category
+        //When the Create New Category link is clicked 
+        function setupNewCategory(createNewCategoryButton) {
+            objectToEdit = $('#newCategoryHeader');
+            objectToEdit.attr('contenteditable', true);
+            objectToEdit.addClass('HeaderEditing');
+            $('#saveNewCategory').show();
+            $('#deleteNewCategory').show();
+            createNewCategoryButton.hide();
+            //Stop link click default action
+            return false;
+        };
+
+        var spinner = '<img id="AjaxSpinner" src="/Content/Images/ajax-loader.gif"/>'
+
+        //Save Edited Products using Ajax to post changes and [TODO] append before the editable section with our results
+        function saveNewCategory(saveLink) {
+            //var postParams = getPostParams();
+            var editableSection = $('#newCategoryHeader');
+            var postParams = { 'categoryTitle': editableSection.text() };
+            saveLink.append(spinner);
+            //postParams.push({ name: 'Id', value: id });
+            //var editableSection = $('#editableSection');
+            $.post('@Url.Action("NewCategory","Product")', postParams)
+                .always(function (response) {
+                    $('#AjaxSpinner').remove();
+                })
+                .success(function (response) {
+                    //editableSection.css('border', 'none');
+                    //editableSection.css('min-height', '0');
+                    //editableSection.css('min-width', '0');
+                    editableSection.attr('contenteditable', false);
+                    editableSection.removeClass('HeaderEditing');
+                    //editableSection.attr('data-id', response["Id"]);
+                    $('#deleteNewCategory span').text('Delete');
+                    $('#deleteNewCategory').attr('data-id', response["Id"]);
+                    $('#newCatnewProd').attr('href', '@Url.Action("New","Product")' + '?catId=' + response["Id"]);
+                    $('#saveNewCategory').hide();
+                    $('#newCatnewProd').show();
+
+                })
+                .fail(function () {
+                    alert("Nothing has been changed.  Please refresh page and try again");
+                    editableSection.addClass('error');
+                });
+            //Stop link click default action
+            return false;
+        }
+
+        //Delete Products using Ajax to post changes and remove item from screen
+        function deleteProduct(id, deleteLink) {
+            //var spinner = '<img id="AjaxSpinner" src="/Content/Images/ajax-loader.gif"/>'
+            deleteLink.append(spinner);
+
+            $.post('@Html.Raw(Url.Action("Delete", new { id = "__ID__" }))'.replace(/__ID__/, id))
+                .always(function (response) {
+                    $('#AjaxSpinner').remove();
+                })
+                .success(function () {
+                    var deletedItem = deleteLink.parent().parent('li');
+                    deletedItem.remove();
+
+                })
+                .fail(function () {
+                    alert("Nothing has been changed.  Please refresh page and try again");
+                });
+            //Stop link click default action
+            return false;
+        }
+
+        //Reset the Create New Category section
+        function resetNewCategory(linkClicked) {
+            //var editableSection = linkClicked.parent().children('h3');
+            var editableSection = $('#newCategoryHeader');
+            //var newCategoryLink = $("#createNewCategory");
+            var subChildren = editableSection.find('*');
+            editableSection.text("");
+            editableSection.add(subChildren);
+            editableSection.removeClass('HeaderEditing');
+            editableSection.attr('contenteditable', false);
+            $('#deleteNewCategory span').text('Cancel');
+            $('#AjaxSpinner').remove();
+            $("#createNewCategory").show();
+            $('#deleteNewCategory').hide()
+            $('#saveNewCategory').hide();
+            $('#newCatnewProd').hide();
+            $('#deleteNewCategory').attr('data-id', "");
+            $('#newCatnewProd').children("a").attr('href', '@Url.Action("New","Product")' + '?catId=' + "-1");
+        }
+
+        //Delete Categories using Ajax to post changes
+        //If unsaved new Category then reset to Create New Category
+        //Cancel delete if category has active products (Back end checks also)
+        function deleteCategory(id, deleteLink) {
+            var deletedItem = deleteLink.parent();
+            //var spinner = '<img id="AjaxSpinner" src="/Content/Images/ajax-loader.gif"/>'
+            
+
+            //Need a better way of determining if we have link chidren
+            //var numberOfProducts = deletedItem.children("li");
+            if (!(deletedItem.children('section').children('ul').children('li')[0] == undefined)) {
+                alert("You can only delete categories with no  products");
+                //Stop link click default action
+                return false;
+            }
+
+            //If category is un-saved then simply reset the New Category Section
+            if (id == "") {
+                resetNewCategory(deleteLink);
+                //Stop link click default action
+                return false;
+            }
+            deletedItem.append(spinner);
+            //Otherwise delete the category
+            $.post('@Html.Raw(Url.Action("DeleteCategory", new { id = "__ID__" }))'.replace(/__ID__/, id))
+                .always(function (response) {
+                    $('#AjaxSpinner').remove();
+                })
+                .success(function (response) {
+                    resetNewCategory(deleteLink)
+                    deletedItem.remove();
+                })
+                .fail(function (jqXHR, textStatus, error) {
+                    alert("Nothing has been changed.  Please refresh page and try again:  " + JSON.parse(xhr.responseText).Message);
+                });
+            //Stop link click default action
+            return false;
+        }
+
+    });
+</script>

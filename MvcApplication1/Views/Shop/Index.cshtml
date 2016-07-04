@@ -1,0 +1,173 @@
+﻿@model RobynHandMadeSoap.Models.Shop
+
+@{
+    ViewBag.Title = "Shop - Treat yourself to our beautiful hand made soaps";
+}
+
+<hgroup class="title">
+    <h2>Shop  - Treat yourself to our beautiful hand made soaps</h2>
+</hgroup>
+    <div id="shopBasket" style="width: 30%;height: 100%;left: 1090px; background-color: #99225f;position: absolute;display: none;">
+
+		<ol id="shopBasketOL" style="position: relative;display: inline-block; left: 0px; height: 800px;">
+			<li class="placeholder">Add your items here</li>
+		</ol>
+    </div>
+
+<div style="position: relative;height: 100%;width: 100%;">
+    <div id="shop" class="ui-widget-content" style="width: 100%;height: 100%;top: 0;position: relative">
+        <section>
+        @{ foreach (RobynHandMadeSoap.Models.ProductCategories pc in @Model.product_categories)
+           {
+
+               <section style="border-bottom: 1pt dashed #99225f;">
+                   <h3 id="@pc.Name">@pc.Name</h3>
+
+                   <section>
+                        <ul Class="ShopUL">
+                        @foreach (RobynHandMadeSoap.Models.ProductAndDetail prod in @pc.product_and_detail)
+                        {
+    
+                            <li class="ShopLI">
+                                <div class="prodImgDiv">
+                                    <a class="prodImg"  href="@Url.Action("Product", "Shop", new { id = @prod.product.Id })" title="@prod.product.Name" >
+                                        <img src="@prod.product.Image_Uri" width="170" height="135" />
+                                    </a>
+                                </div>
+                                <div class="ShopProdInfo">
+		                            <div style="color: #666; margin-top:20px">
+                                        @prod.product.Name
+			                        </div>
+	                            </div>
+            
+
+                            </li>
+    
+                        }
+                        </ul>
+                <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+                ">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_viewcart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+                    </section>
+                </section>
+           }
+        }
+        </section>
+    </div>
+
+    <div id="shopSuccess" style="display: none;">
+
+        <div id="shopSuccess1" >   </div>
+
+        <div id="shopSuccess2" >
+            <p>Thank You for your order.</p>
+
+            <p>A confirmation email will be sent to you shortly from Pay Pal.</p>
+
+            <p>All orders will be dispatched within 2-4 working days.</p>
+
+            <p>If you have any more queries please email <a href="mailto:robynshandmadesoap.com?subject=ShopSuccess">robynshandmadesoap.com</a></p>
+
+            <div class="CloseButton">
+                <img src="/Images/CloseX.Jpg" onclick="closeMe()" class="CloseButtonImg"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+	<script  type="text/javascript">
+    $(function () {
+       /* $(".prodImg").draggable({
+            start: function (event,ui) {
+                //var $item = ui.draggable;
+                $(this).css("border", "2pt solid blue");
+                //var newImg = $(this).clone().removeClass("ui-draggable-dragging");
+                //$(this).parent().html(newImg.html());
+                //$(ui.draggable).parent().appendTo(newImg)
+                //$(newImg).removeClasshtml("ui.draggable");
+                //var thisParent = $(this).parent();
+                //thisParent.html($newImg);
+                var newImg = $(this).clone().removeClass("ui-draggable-dragging").css("border", "").css("top", "0").css("left", "0").css("margin","10px").css("position","absolute").css("display", "inline-block");
+                $(this).after(newImg);
+            },
+            stop: function  (event,ui) {
+                //var $item = ui.draggable;
+                $(this).css("border", "2pt solid red");
+                //IF NOT IN CART THEN DELETE
+                //
+                //ELSE IF IN CART DELETE AND DO ALERT
+                alert("Done!!");
+            }
+        });
+        */
+
+        $(".prodImgNONE").draggable({
+            appendTo: "body",
+            helper: "clone"
+        });
+
+        $("#shopBasketOLNONE").droppable({
+            activeClass: "ui-state-default",
+            hoverClass: "ui-state-hover",
+            accept: ":not(.ui-sortable-helper)",
+            drop: function (event, ui) {
+                $(this).find(".placeholder").remove();
+                //$("<li></li>").text(ui.draggable.text()).appendTo(this);
+                //$(ui.draggable).children(1, "a img").css("width", "85px").height("68px");
+                $("<li style=\"position: relative;display: inline-block; left: 50px\"></li>").html($(ui.draggable).html()).appendTo(this);
+                //$(this).$("img").css("width", "85px").height("68px");
+            }
+        }).sortable({
+            items: "li:not(.placeholder)",
+            sort: function () {
+                // gets added unintentionally by droppable interacting with sortable
+                // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+                $(this).removeClass("ui-state-default");
+            }
+        })
+    });
+
+
+
+
+	</script>
+
+<script type="text/javascript">
+
+    function  closeMe() {
+
+        $("#shopSuccess").css("display", "none");
+    };
+
+
+    function openMe() {
+
+        $("#shopSuccess").css("display", "block");
+    };
+
+    $(function () {
+        var success = '@(Request.QueryString["success"] != null ?  Request.QueryString["success"].ToString() : "N")';
+       if (success == 'Y') {
+         openMe();
+       } else {
+           closeMe();
+       };
+    });
+   // openMe();
+    //var success =  "N";
+   // var success = 'Y';
+   /*
+    if (success == 'Y') {
+        openMe();
+    } else {
+        openMe();
+    };
+    */
+    
+
+</script>

@@ -1,0 +1,20 @@
+﻿@model RobynHandMadeSoap.Product_Categories
+        <tr data-pkey="@Model.Id">
+            <td>
+                @Html.EditorFor(m => m.Name)
+                @Html.ValidationMessageFor(m => m.Name) 
+            </td>
+                @Html.EditorFor(m => m.Image_Uri, "Image_Uri")
+            <td>
+                @Html.EditorFor(m => m.Description)
+                @Html.ValidationMessageFor(m => m.Description)
+            </td>
+            <td>
+        @if (ViewBag.ButtonName == "Create")
+        {
+                <button class="createRowCat">Create</button><button class="cancelCreateRowCat">Cancel</button>
+        } else {
+                <button class="editRowCat">Save</button><button class="cancelEditRowCat">Cancel</button>
+        }
+            </td>
+        </tr>

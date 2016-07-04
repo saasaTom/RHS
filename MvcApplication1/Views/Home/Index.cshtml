@@ -1,0 +1,35 @@
+@{
+    ViewBag.Title = "Robyns Handmade Soap, all natural handmade Irish soap - www.robynshandmadesoap.com";
+}
+
+<section>
+<section class="Content_wrapper">
+    <section class="Content_Title">
+        <p class="Content_Title_Text">News</p>
+    </section>
+    <section class="Content_Text_wrapper">
+
+        <!--div id="newsReplace"-->
+           @{Html.RenderAction("NewsPartial");}
+        <!--/div -->
+
+    </section>
+    <section class="Content_Image_Wrapper">
+        <img  class="Content_Image" src="~/Images/robs-soap-pic.jpg" alt="Robyns Soap"  />
+    </section>
+</section>
+
+
+<section class="Content_wrapper">
+    <section class="Content_Title">
+        <p class="Content_Title_Text">Shop</p>
+    </section>
+    
+    <section class="Shop_Wrapper">
+        @*Put the Products in Here.  Select Top 3, wih scroll bar.  Each picture links to product detail page. *@
+
+        @{Html.RenderAction("ProductPartial");}
+
+    </section>
+</section>
+</section>

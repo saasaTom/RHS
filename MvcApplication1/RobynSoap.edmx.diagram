@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3ecd65a33391466fa502d84b687187b3" Name="Diagram1" >
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.News" Width="1.5" PointX="0.5" PointY="4.375" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Stockist" Width="1.5" PointX="0.875" PointY="0.625" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Stockist_Locations" Width="1.5" PointX="3.5" PointY="0.75" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Product_Detail" Width="1.5" PointX="10.625" PointY="3.875" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Product_Ingredient" Width="1.5" PointX="3.125" PointY="7.5" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Ingredient" Width="1.5" PointX="0.5" PointY="7.375" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Product" Width="2.5" PointX="7.5" PointY="4" />
+        <AssociationConnector Association="RobynsHandMadeSoapModel.FK_Product_Detail2Product" />
+        <AssociationConnector Association="RobynsHandMadeSoapModel.FK_Ingredient2Product" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Product_Categories" Width="1.5" PointX="8.125" PointY="0.625" />
+        <AssociationConnector Association="RobynsHandMadeSoapModel.FK_Product2Category" />
+        <AssociationConnector Association="RobynsHandMadeSoapModel.FK_Product2Ingredient" />
+        <AssociationConnector Association="RobynsHandMadeSoapModel.FK_Stockist2Location" />
+        <EntityTypeShape EntityType="RobynsHandMadeSoapModel.Access_History" Width="1.5" PointX="5.375" PointY="2.125" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

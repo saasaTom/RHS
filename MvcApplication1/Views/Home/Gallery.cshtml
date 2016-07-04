@@ -1,0 +1,155 @@
+<script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
+
+@{
+    ViewBag.Title = "Gallery - Robyns Handmade Natural Irish Soap Photos";
+}
+
+
+<hgroup class="title">
+    <h2>Gallery</h2>
+</hgroup>
+<div class="galMain">
+    <div class="galQaurters galQaurterBorderBottom ">
+        <div class="galQuartersDiv galQuartersDivLeft galQaurterBorderRight float-left">
+            <div class="galImgDiv">
+                <img id="SOAP" src="/Images/Gallery/Gallery-soap.jpg" width="200" height="200" alt="Soaps Gallery" />
+            </div>
+            <div class="galImgTitleDiv">
+                SOAP
+            </div>
+        </div>
+
+        <div class="galQuartersDiv float-right">
+            <div class="galImgDiv">
+                <img id="MAKING" src="/Images/Gallery/Gallery-making.jpg" width="200" height="200" alt="Soap Making Gallery"/>
+            </div>
+            <div class="galImgTitleDiv">
+                MAKING
+            </div>
+        </div>
+    </div>
+
+    <div class="galQaurters ">
+        <div class="galQuartersDiv galQaurterBorderRight float-left" >
+            <div class="galImgDiv">
+                <img id="GROWING" src="/Images/Gallery/Gallery-growing.jpg" width="200" height="200" alt="Growing Ingreditents Gallery"/>
+            </div>
+            <div class="galImgTitleDiv">
+                GROWING
+            </div>
+        </div>
+
+        <div class="galQuartersDiv float-right">
+            <div class="galImgDiv">
+                <img id="ONSALE" src="/Images/Gallery/Gallery-onsale.jpg" width="200" height="200"alt="Soap for Sale" />
+            </div>
+            <div class="galImgTitleDiv">
+                ON SALE
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="galMain2" style="display: none;">
+    <div id="detailsDiv"  class="galImgMain">
+        <!-- placeholder for Image Gallery -->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    //Set up Wrapper Links around Gallery Images linking to the OpenGallery() funtction
+    //Firstly it calls a get call on the GalleryImageView partial view with the ID of the image that was clicked
+    //passed in.  The partial view then returns a set of Images for that gallery that are all hidden into the #detailsDiv element.
+    $(function () {
+        $("div.galImgDiv img").wrap('<a href="javascript:void()"/>').click(function (){
+            $.get('@Url.Action("GalleryImageView","Home")', { galleryType: $(this).attr("id") }, function (data) {
+                //Append the partial view HTML into the #detailsDiv
+                $('#detailsDiv').empty().append(data);
+
+                //Open the gallery
+                openGallery();
+            }
+            );
+           
+        });
+    });
+
+    //Show the next gallery image by setting changing the class of the current image (.curImg) to hidden (.othImg)
+    //and finding the next image sequence and showing the image by setting the class to .curImg
+    function nextImg() {
+
+        //Find the current image id
+        var myVar = $("div.galImgMain div.curImg").attr("id");
+
+        //Hide the current image (.curImg) by changing its class to .othImg
+        $("div.galImgMain div.curImg").attr("class", "othImg");
+
+        //Find the current Image Sequence number from its id and increase it by one
+        var nImg = parseInt(myVar.match(/\d+/,3));
+        nImg++;
+        
+        //Change the current Image ID by replacing the number with the next number in the sequence
+        myVar = myVar.replace(/\d+/, nImg);
+        
+        //Try and find the next image
+        var nextImg = $("#" + myVar);
+
+        if (nextImg.length == 0) {
+            //If we can't find one, then simply show the first image again.
+            nImg = 1;
+            $("div.galImgMain div.othImg").first().attr("class", "curImg");
+        }
+        else {
+            //else show the next image by changing its class
+            nextImg.attr("class", "curImg");
+        };
+
+        //Increment the image count
+        $('#imgCount').text(nImg)
+    };
+
+    function prevImg() {
+        //Find the current image id
+        var myVar = $("div.galImgMain div.curImg").attr("class", "othImg").attr("id");
+
+        //Hide the current image
+        $("div.galImgMain div.curImg").attr("class", "othImg");
+
+        //Find the current image sequence number and decrement it
+        var nImg = parseInt(myVar.match(/\d+/, 3));
+        nImg--;
+
+        myVar = myVar.replace(/\d+/, nImg);
+        
+        //Attemp to find the previous image
+        var nextImg = $("#" + myVar);
+        if (nextImg.length == 0) {
+            //If we can't find it then set the previous image to the last image
+            nImg = $("#imgTotal").text();
+            $("div.galImgMain div.othImg").last().attr("class", "curImg");
+        }
+        else {
+            nextImg.attr("class", "curImg");
+        };
+
+        //Decrement the image count
+        $('#imgCount').text(nImg)
+    };
+
+    //Opoen the gallery by hidding the main Gallery home page Div .galMain and showing the image gllery .galMain2
+    //It also sets the first image to be shown.
+    function openGallery() {
+        $("#detailsDiv div.othImg").first().attr("class", "curImg");
+        $("div.galMain").hide(2);
+        $("div.galMain2").show(2);
+    };
+
+    //Close the gallery by doing the reverse of above!
+    function closeGallery() {
+        $("div.galMain2").hide(2);
+        $("div.galMain").show(2);
+    };
+
+</script>

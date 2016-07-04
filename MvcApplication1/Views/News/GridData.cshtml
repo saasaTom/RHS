@@ -1,0 +1,34 @@
+﻿@model RobynHandMadeSoap.Models.NewsModel.news
+
+
+<section id="@Model.Date.ToString("dd-MMM-yyyy")" class="News_Item" data-pkey="@Model.Id" style="display:none;">
+    <section class="Content_Text">
+        <p style="color: #99225f; margin: 0">
+            @Model.DateString
+        </p>
+        @Html.Raw(Model.DetailHTML)
+    </Section>
+    <section class="News_Image_Container" >
+        <img class="News_Image2" src="@Model.ImgURL" width="170" height="255" />
+    </section>
+
+    </section>
+
+
+@*@foreach (var item in Model) {
+    <tr data-pkey="@item.Id" style="border: 5pt solid black;margin-bottom:5px;">
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td style="border: 2pt solid black;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Detail)
+        </td>
+        <td style="border: 2pt solid black;margin-bottom:5px;">
+            <img src="@Html.DisplayFor(modelItem => item.ImgURL)" width ="60" height="80"/>
+        </td>
+        <td class="rowControl hidden">
+            <a href="#makeRowEditable" class="makeRowEditable">Edit</a> |
+            <a href="#deleteRow" class="deleteRow">Delete</a>
+        </td>
+    </tr>
+}*@

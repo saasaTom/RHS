@@ -1,0 +1,38 @@
+﻿@model FileInfo[]
+<!-- Generates the appropriate Image gallery for use ont the Gallery page -->
+ <div class="galImgMain">
+        @{  var i = 0;
+            foreach (var myFile in @Model) {
+              
+                i = i + 1; 
+                <div id="galImg-@i" class="othImg">
+                    <div id="galNavLeft" class="navDiv">
+                        <a href="javascript:prevImg()" class="imgNavLink" >
+                            <div class="imgNavDiv" style="left: 0;">
+                                <img src="/Images/Prev_Select.png" width="27" height="45" alt="Previous Image"/>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="galNavRight" class="navDiv">
+                        <a href="javascript:nextImg()"  class="imgNavLink"  >
+                            <div class="imgNavDiv" style="right: 0;">
+                                <img src="/Images/Next_Select.png" width="27" height="45" alt="Next Image" />
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <img  src="/Images/Gallery/@myFile.Name" alt="@myFile.Name"/>
+                </div>
+            }
+        }
+        
+        <div style="width: 100%;">
+            <div class="galImgExitDiv">
+                <a href="javascript:closeGallery()" style="color: rgb(153, 51, 102);">Back to main gallery</a>
+            </div>
+            <div class="galImgCountDiv">
+                Soap: <span id="imgCount">1</span> of <span id ="imgTotal">@Model.Count()</span>
+            </div>
+        </div>
+    </div>
+

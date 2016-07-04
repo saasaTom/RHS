@@ -1,0 +1,28 @@
+﻿@model IEnumerable<RobynHandMadeSoap.Product>
+
+@foreach (var item in Model) {
+    <tr data-pkey="@item.Id" style="border: 5pt solid black;margin-bottom:5px;" >
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Image_Uri)
+        </td>
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Product_Categories.Name)
+        </td>
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.Product_Code)
+        </td>
+        <td style="border: 2pt dashed grey;margin-bottom:5px;">
+            @Html.DisplayFor(modelItem => item.PP_Hosted_Button_Id)
+        </td>
+        <td class="rowControl hidden">
+            <a href="#makeRowEditable" class="makeRowEditable">Edit</a> |
+            <a href="#deleteRow" class="deleteRow">Delete</a>
+        </td>
+    </tr>
+}

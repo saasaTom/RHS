@@ -1,0 +1,39 @@
+﻿   <section id="editableSection">
+        <div>
+            <h2 class="editableTag" id="pName" contenteditable="true" data-name="product.Name" style="min-height: 20px;">@Model.product.Name</h2>
+        </div>
+        <section>
+            <div class="pdImgSect">
+                <div class="pdImgLink">
+                    <div class="dropbox" style="min-width:340px;min-height: 270px; border: 2pt solid #AA445F ">
+                        <img id="mainImage" src="@Model.product.Image_Uri" width="340" height="270" alt="Product Image"  />
+                        <span id="droplabel" style="top: 0;">Drop file here...</span>
+                    </div>
+                    <img id="preview" src="@Model.product.Image_Uri" alt="[ preview will display here ]" width="80" height="65"  style="font-size:10pt; margin-top: 20px; border:2pt solid grey;float: right;" />
+                </div>
+                <div class="DBImageURIText hidden">
+                    <input id="pImageURI" type="text" name="pImageURI" class="hidden"  data-name-val="product.Image_Uri" value="@Model.product.Image_Uri" />
+                </div>
+            </div>
+            <!-- HIDDEN FIELDS FOR DATA VALIDAION -->
+            <div class="hidden" data-name="product.Id">@Model.product.Id</div>
+            <div class="hidden" data-name="product_detail.Effective_Date">@Model.product_detail.Effective_Date</div>
+            <div class="hidden" data-name="product_detail.Price_Currency_Code">@Model.product_detail.Price_Currency_Code</div>
+            <div class="pdDescSect editableTag">
+                <p style="margin-top:0;min-height: 40px;" contenteditable="true" data-name="product_detail.Long_Description">@Html.Raw(Model.product_detail.Long_DescriptionHTML )</p>
+                <div>
+                    <div class="pdPriceSect">
+                        Price:  	&#x80;<span id="pPrice" class="editableTag" contenteditable="true" data-name="product_detail.Price" >@Model.product_detail.Price </span>
+                    </div>
+@*                    <div>
+                        In Stock?
+                        <input id = "pInStock" type="checkbox" name="pInStock" data-val="@Model.product_detail.Stock_Quantity" data-name-check="product_detail.Stock_Quantity" @((Model.product_detail.Stock_Quantity > 0) ? "checked" : "" )/>
+                    </div>*@
+                    <div style="width: 15%;float: left;">
+                        <a href="#" class="OnOff On @((Model.product_detail.Stock_Quantity > 0) ? "active" : "" )" data-val="100" data-name-check="product_detail.Stock_Quantity">In Stock</a>
+                        <a href="#" class="OnOff Off @((Model.product_detail.Stock_Quantity > 0) ? "" : "active" )" data-val="0" data-name-check="product_detail.Stock_Quantity">Sold Out</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>

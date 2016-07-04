@@ -1,0 +1,165 @@
+@model RobynHandMadeSoap.Models.ContactModel 
+<script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
+@{
+    ViewBag.Title = "Contact - Let Robyns Handmade Soap know your thoughts or questions about her natural soap";
+}
+
+    <link rel="stylesheet" href="~/Content/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="leaflet.ie.css" /><![endif]-->
+    <script src="/Scripts/leaflet.js"></script>
+    <script src="/Scripts/wax.leaf.min.js"></script>
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+
+
+<form name="contact_email" method="post" runat="server" action="#">
+    <table style="width:450px;">
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Name,new {} )
+            </td>
+            <td>
+                 @Html.TextBoxFor(m => m.Name,new {size="35"})
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.EmailAddress,new {} )
+            </td>
+            <td>
+                 @Html.TextBoxFor(m => m.EmailAddress,new {size="35"})
+            </td>
+        </tr>
+        <tr>
+            <td>
+                 @Html.LabelFor(m => m.Subject,new {} )
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Subject,new {size="35"})
+            </td>
+        </tr>
+        <tr>
+            <td>
+                 @Html.LabelFor(m => m.Comment,new {} )
+            </td>
+            <td>
+                 @Html.TextAreaFor(m => m.Comment,new {cols="50", rows="10"})
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" value="Submit">
+            </td>
+        </tr>
+    </table>
+    @Html.HiddenFor(m => m.TestSP, new { })
+    <h2>@ViewBag.SendStatus </h2>
+</form>
+
+<section><p>Location</p></section>
+    <section>
+        <div id="mapbox" style="width: 800px; height: 400px"></div>
+    <script type="text/javascript">
+
+
+        // Define the map to use from MapBox
+        // This is the TileJSON endpoint copied from the embed button on your map
+    var url = 'http://a.tiles.mapbox.com/v3/bryth821.map-ruvt7339.jsonp';
+
+        // Make a new Leaflet map in your container div
+        var map = new L.Map('mapbox')  // container's id="mapbox"
+            
+    // Center the map on Washington, DC, at zoom 15
+    .setView(new L.LatLng(51.896, -8.027), 11);
+
+       
+
+        // Get metadata about the map from MapBox
+        wax.tilejson(url, function (tilejson) {
+            // Add MapBox Streets as a base layer
+            map.addLayer(new wax.leaf.connector(tilejson));
+        });
+    </script>
+ 
+    <script type="text/javascript">
+        var data = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-8.0772097, 51.865083] //Lat (Across E >0 W < 0 ) Long (Up N 90/S -90) //51.865083,-8.0772097
+                    },
+                    "properties": {
+                        "name": "Robyn's Hand Made Soap"
+                        
+                    }
+                }
+              /*,{
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [-8.074930,51.865310] //Lat (Across E >0 W < 0 ) Long (Up N 90/S -90)
+                  },
+                  "properties": {
+                      "name": "Ballymaloe House"
+                  }
+              }*/
+            ]
+        }
+
+        // Define a GeoJSON data layer
+        //var geojsonLayer = new L.GeoJSON(data);
+        //var museumIcon = L.Icon.extend({
+        //    iconUrl: 'content/Images/monument-24.png',
+        //    shadowUrl: null,
+        //    iconSize: new L.Point(24, 24),
+        //    shadowSize: null,
+        //    iconAnchor: new L.Point(12, 24),
+        //    popupAnchor: new L.Point(0, -24)
+        //});
+
+    // Define a custom icon using the Maki museum icon
+    var museumIcon = L.Icon.extend({
+        iconUrl: '/Content/Images/Robin_Alpha.png',
+        shadowUrl: null,
+        iconSize: new L.Point(30, 30),
+        shadowSize: null,
+        iconAnchor: new L.Point(12, 24),
+        popupAnchor: new L.Point(0,-24)
+    });
+
+    // Define a geojson data layer
+    var geojsonLayer = new L.GeoJSON(data, {
+      pointToLayer: function (latlng) {
+        return new L.Marker(latlng, {
+          icon: new museumIcon()
+        });
+      }
+    });
+
+    // Display the name property on click
+    geojsonLayer.on('featureparse', function (e) {
+        if (e.properties && e.properties.name){
+            e.layer.bindPopup(e.properties.name);
+        }
+    });
+
+    // Populate our geojson layer with data
+    geojsonLayer.addGeoJSON(data);
+
+    // Add the GeoJSON layer
+    map.addLayer(geojsonLayer);
+    </script>
+
+
+        @* <section>
+        <iframe width='500' height='300'  src='http://a.tiles.mapbox.com/v3/bryth821.map-ruvt7339.html#11/51.896/-8.027'></iframe>
+    </section>*@
+
+    </section>
+

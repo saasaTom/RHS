@@ -1,0 +1,16 @@
+﻿@model IEnumerable<RobynHandMadeSoap.Models.NewsModel.news>
+
+@foreach (var newsItem in Model)
+{
+    <section class="News_Item">
+        <section class="Content_Text">
+            <!-- Styled with CSS -->
+            <p>@newsItem.DateString</p>
+
+           @Html.Raw(newsItem.DetailHTML)
+        </section>
+        <section class="News_Image_Container" >
+            <img class="News_Image" src="@newsItem.ImgURL" alt="@newsItem.ImgURL"/>
+        </section>
+    </section>
+}

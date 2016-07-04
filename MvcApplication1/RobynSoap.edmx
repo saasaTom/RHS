@@ -1,0 +1,557 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RobynsHandMadeSoapModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="RobynsHandMadeSoapModelStoreContainer">
+          <EntitySet Name="Access_History" EntityType="RobynsHandMadeSoapModel.Store.Access_History" store:Type="Tables" />
+          <EntitySet Name="Ingredients" EntityType="RobynsHandMadeSoapModel.Store.Ingredients" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="RobynsHandMadeSoapModel.Store.News" store:Type="Tables" />
+          <EntitySet Name="Product_Categories" EntityType="RobynsHandMadeSoapModel.Store.Product_Categories" store:Type="Tables" />
+          <EntitySet Name="Product_Detail" EntityType="RobynsHandMadeSoapModel.Store.Product_Detail" store:Type="Tables" />
+          <EntitySet Name="Product_Ingredient" EntityType="RobynsHandMadeSoapModel.Store.Product_Ingredient" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="RobynsHandMadeSoapModel.Store.Products" store:Type="Tables" />
+          <EntitySet Name="Stockist" EntityType="RobynsHandMadeSoapModel.Store.Stockist" store:Type="Tables" />
+          <EntitySet Name="Stockist_Locations" EntityType="RobynsHandMadeSoapModel.Store.Stockist_Locations" store:Type="Tables" />
+          <AssociationSet Name="FK_Ingredient2Product" Association="RobynsHandMadeSoapModel.Store.FK_Ingredient2Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Ingredient" EntitySet="Product_Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Detail2Product" Association="RobynsHandMadeSoapModel.Store.FK_Product_Detail2Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Detail" EntitySet="Product_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product2Category" Association="RobynsHandMadeSoapModel.Store.FK_Product2Category">
+            <End Role="Product_Categories" EntitySet="Product_Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product2Ingredient" Association="RobynsHandMadeSoapModel.Store.FK_Product2Ingredient">
+            <End Role="Ingredients" EntitySet="Ingredients" />
+            <End Role="Product_Ingredient" EntitySet="Product_Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stockist2Location" Association="RobynsHandMadeSoapModel.Store.FK_Stockist2Location">
+            <End Role="Stockist_Locations" EntitySet="Stockist_Locations" />
+            <End Role="Stockist" EntitySet="Stockist" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Access_History">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Attempted_URL" Type="nvarchar" MaxLength="300" />
+          <Property Name="Stage" Type="nvarchar" MaxLength="100" />
+          <Property Name="OACode" Type="nvarchar" MaxLength="500" />
+          <Property Name="OAToken" Type="nvarchar" MaxLength="500" />
+          <Property Name="CookieSet" Type="nvarchar" MaxLength="1" />
+          <Property Name="CookiePath" Type="nvarchar" MaxLength="100" />
+          <Property Name="ResultSF" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Ingredients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Detail" Type="nvarchar" Nullable="false" MaxLength="3000" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="300" />
+          <Property Name="DateString" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Product_Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Image_Uri" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Status_Reason" Type="nvarchar" MaxLength="200" />
+          <Property Name="Status_Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Product_Detail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Product_Id" Type="int" Nullable="false" />
+          <Property Name="Price" Type="numeric" Nullable="false" Scale="2" />
+          <Property Name="Effective_Date" Type="datetime" Nullable="false" />
+          <Property Name="Cease_Date" Type="datetime" />
+          <Property Name="Price_Currency_Code" Type="nvarchar" Nullable="false" />
+          <Property Name="Long_Description" Type="nvarchar" Nullable="false" />
+          <Property Name="Stock_Quantity" Type="int" />
+          <Property Name="Price_Merchant" Type="numeric" Scale="2" />
+        </EntityType>
+        <EntityType Name="Product_Ingredient">
+          <Key>
+            <PropertyRef Name="Product_Id" />
+            <PropertyRef Name="Ingredient_Id" />
+          </Key>
+          <Property Name="Product_Id" Type="int" Nullable="false" />
+          <Property Name="Ingredient_Id" Type="int" Nullable="false" />
+          <Property Name="Effective_Date" Type="datetime" Nullable="false" />
+          <Property Name="Cease_Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="Image_Uri" Type="nvarchar" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" />
+          <Property Name="Category_Id" Type="int" />
+          <Property Name="Product_Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="PP_Hosted_Button_Id" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Status_Reason" Type="nvarchar" MaxLength="200" />
+          <Property Name="Status_Date" Type="datetime" />
+          <Property Name="PP_Hosted_Button_Merchant" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Stockist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Location_Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="GPS_Lat" Type="float" />
+          <Property Name="GPS_Long" Type="float" />
+          <Property Name="Effective_Date" Type="datetime" Nullable="false" />
+          <Property Name="Cease_Date" Type="datetime" />
+          <Property Name="Link_Address" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Stockist_Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Effective_Date" Type="datetime" Nullable="false" />
+          <Property Name="Cease_Date" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Ingredient2Product">
+          <End Role="Products" Type="RobynsHandMadeSoapModel.Store.Products" Multiplicity="1" />
+          <End Role="Product_Ingredient" Type="RobynsHandMadeSoapModel.Store.Product_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Ingredient">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Detail2Product">
+          <End Role="Products" Type="RobynsHandMadeSoapModel.Store.Products" Multiplicity="1" />
+          <End Role="Product_Detail" Type="RobynsHandMadeSoapModel.Store.Product_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Detail">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product2Category">
+          <End Role="Product_Categories" Type="RobynsHandMadeSoapModel.Store.Product_Categories" Multiplicity="0..1" />
+          <End Role="Products" Type="RobynsHandMadeSoapModel.Store.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="Category_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product2Ingredient">
+          <End Role="Ingredients" Type="RobynsHandMadeSoapModel.Store.Ingredients" Multiplicity="1" />
+          <End Role="Product_Ingredient" Type="RobynsHandMadeSoapModel.Store.Product_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Ingredient">
+              <PropertyRef Name="Ingredient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stockist2Location">
+          <End Role="Stockist_Locations" Type="RobynsHandMadeSoapModel.Store.Stockist_Locations" Multiplicity="1" />
+          <End Role="Stockist" Type="RobynsHandMadeSoapModel.Store.Stockist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stockist_Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stockist">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RobynsHandMadeSoapModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RobynsHandMadeSoapEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="News" EntityType="RobynsHandMadeSoapModel.News" />
+          <EntitySet Name="Stockists" EntityType="RobynsHandMadeSoapModel.Stockist" />
+          <EntitySet Name="Stockist_Locations" EntityType="RobynsHandMadeSoapModel.Stockist_Locations" />
+          <EntitySet Name="Product_Detail" EntityType="RobynsHandMadeSoapModel.Product_Detail" />
+          <EntitySet Name="Product_Ingredient" EntityType="RobynsHandMadeSoapModel.Product_Ingredient" />
+          <EntitySet Name="Ingredients" EntityType="RobynsHandMadeSoapModel.Ingredient" />
+          <EntitySet Name="Products" EntityType="RobynsHandMadeSoapModel.Product" />
+          <AssociationSet Name="FK_Product_Detail2Product" Association="RobynsHandMadeSoapModel.FK_Product_Detail2Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product_Detail" EntitySet="Product_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient2Product" Association="RobynsHandMadeSoapModel.FK_Ingredient2Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product_Ingredient" EntitySet="Product_Ingredient" />
+          </AssociationSet>
+          <EntitySet Name="Product_Categories" EntityType="RobynsHandMadeSoapModel.Product_Categories" />
+          <AssociationSet Name="FK_Product2Category" Association="RobynsHandMadeSoapModel.FK_Product2Category">
+            <End Role="Product_Categories" EntitySet="Product_Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product2Ingredient" Association="RobynsHandMadeSoapModel.FK_Product2Ingredient">
+            <End Role="Ingredient" EntitySet="Ingredients" />
+            <End Role="Product_Ingredient" EntitySet="Product_Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stockist2Location" Association="RobynsHandMadeSoapModel.FK_Stockist2Location">
+            <End Role="Stockist_Locations" EntitySet="Stockist_Locations" />
+            <End Role="Stockist" EntitySet="Stockists" />
+          </AssociationSet>
+          <EntitySet Name="Access_History" EntityType="RobynsHandMadeSoapModel.Access_History" />
+        </EntityContainer>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Detail" Nullable="false" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImgURL" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DateString" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Stockist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Location_Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Double" Name="GPS_Lat" />
+          <Property Type="Double" Name="GPS_Long" />
+          <Property Type="DateTime" Name="Effective_Date" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Cease_Date" Precision="3" />
+          <Property Type="String" Name="Link_Address" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Stockist_Locations" Relationship="RobynsHandMadeSoapModel.FK_Stockist2Location" FromRole="Stockist" ToRole="Stockist_Locations" />
+        </EntityType>
+        <EntityType Name="Stockist_Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Effective_Date" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Cease_Date" Precision="3" />
+          <NavigationProperty Name="Stockists" Relationship="RobynsHandMadeSoapModel.FK_Stockist2Location" FromRole="Stockist_Locations" ToRole="Stockist" />
+        </EntityType>
+        <EntityType Name="Product_Detail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Product_Id" Nullable="false" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="Effective_Date" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Cease_Date" Precision="3" />
+          <Property Type="String" Name="Price_Currency_Code" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Long_Description" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="RobynsHandMadeSoapModel.FK_Product_Detail2Product" FromRole="Product_Detail" ToRole="Product" />
+          <Property Type="Int32" Name="Stock_Quantity" />
+          <Property Type="Decimal" Name="Price_Merchant" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Product_Ingredient">
+          <Key>
+            <PropertyRef Name="Product_Id" />
+            <PropertyRef Name="Ingredient_Id" />
+          </Key>
+          <Property Type="Int32" Name="Product_Id" Nullable="false" />
+          <Property Type="Int32" Name="Ingredient_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Effective_Date" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Cease_Date" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Product" Relationship="RobynsHandMadeSoapModel.FK_Ingredient2Product" FromRole="Product_Ingredient" ToRole="Product" />
+          <NavigationProperty Name="Ingredient" Relationship="RobynsHandMadeSoapModel.FK_Product2Ingredient" FromRole="Product_Ingredient" ToRole="Ingredient" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product_Ingredient" Relationship="RobynsHandMadeSoapModel.FK_Product2Ingredient" FromRole="Ingredient" ToRole="Product_Ingredient" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Image_Uri" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product_Detail" Relationship="RobynsHandMadeSoapModel.FK_Product_Detail2Product" FromRole="Product" ToRole="Product_Detail" />
+          <NavigationProperty Name="Product_Ingredient" Relationship="RobynsHandMadeSoapModel.FK_Ingredient2Product" FromRole="Product" ToRole="Product_Ingredient" />
+          <Property Type="Int32" Name="Category_Id" />
+          <NavigationProperty Name="Product_Categories" Relationship="RobynsHandMadeSoapModel.FK_Product2Category" FromRole="Product" ToRole="Product_Categories" />
+          <Property Type="String" Name="Product_Code" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PP_Hosted_Button_Id" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Status" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Status_Reason" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Status_Date" Precision="3" />
+          <Property Type="String" Name="PP_Hosted_Button_Merchant" Nullable="true" />
+        </EntityType>
+        <Association Name="FK_Product_Detail2Product">
+          <End Type="RobynsHandMadeSoapModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="RobynsHandMadeSoapModel.Product_Detail" Role="Product_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Detail">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient2Product">
+          <End Type="RobynsHandMadeSoapModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="RobynsHandMadeSoapModel.Product_Ingredient" Role="Product_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Ingredient">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product_Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Image_Uri" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="RobynsHandMadeSoapModel.FK_Product2Category" FromRole="Product_Categories" ToRole="Product" />
+          <Property Type="String" Name="Status" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Status_Reason" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Status_Date" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Product2Category">
+          <End Type="RobynsHandMadeSoapModel.Product_Categories" Role="Product_Categories" Multiplicity="0..1" />
+          <End Type="RobynsHandMadeSoapModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Category_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product2Ingredient">
+          <End Type="RobynsHandMadeSoapModel.Ingredient" Role="Ingredient" Multiplicity="1" />
+          <End Type="RobynsHandMadeSoapModel.Product_Ingredient" Role="Product_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Ingredient">
+              <PropertyRef Name="Ingredient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stockist2Location">
+          <End Type="RobynsHandMadeSoapModel.Stockist_Locations" Role="Stockist_Locations" Multiplicity="1" />
+          <End Type="RobynsHandMadeSoapModel.Stockist" Role="Stockist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stockist_Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stockist">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Access_History">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Attempted_URL" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Stage" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OACode" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OAToken" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CookieSet" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CookiePath" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ResultSF" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RobynsHandMadeSoapModelStoreContainer" CdmEntityContainer="RobynsHandMadeSoapEntities">
+    <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="DateString" ColumnName="DateString" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stockists">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Stockist">
+              <MappingFragment StoreEntitySet="Stockist">
+                <ScalarProperty Name="Link_Address" ColumnName="Link_Address" />
+                <ScalarProperty Name="Cease_Date" ColumnName="Cease_Date" />
+                <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
+                <ScalarProperty Name="GPS_Long" ColumnName="GPS_Long" />
+                <ScalarProperty Name="GPS_Lat" ColumnName="GPS_Lat" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Location_Id" ColumnName="Location_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stockist_Locations">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Stockist_Locations">
+              <MappingFragment StoreEntitySet="Stockist_Locations">
+                <ScalarProperty Name="Cease_Date" ColumnName="Cease_Date" />
+                <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Detail">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Product_Detail">
+              <MappingFragment StoreEntitySet="Product_Detail">
+                <ScalarProperty Name="Price_Merchant" ColumnName="Price_Merchant" />
+                <ScalarProperty Name="Stock_Quantity" ColumnName="Stock_Quantity" />
+                <ScalarProperty Name="Long_Description" ColumnName="Long_Description" />
+                <ScalarProperty Name="Price_Currency_Code" ColumnName="Price_Currency_Code" />
+                <ScalarProperty Name="Cease_Date" ColumnName="Cease_Date" />
+                <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Ingredient">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Product_Ingredient">
+              <MappingFragment StoreEntitySet="Product_Ingredient">
+                <ScalarProperty Name="Cease_Date" ColumnName="Cease_Date" />
+                <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
+                <ScalarProperty Name="Ingredient_Id" ColumnName="Ingredient_Id" />
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredients">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="PP_Hosted_Button_Merchant" ColumnName="PP_Hosted_Button_Merchant" />
+                <ScalarProperty Name="Status_Date" ColumnName="Status_Date" />
+                <ScalarProperty Name="Status_Reason" ColumnName="Status_Reason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PP_Hosted_Button_Id" ColumnName="PP_Hosted_Button_Id" />
+                <ScalarProperty Name="Product_Code" ColumnName="Product_Code" />
+                <ScalarProperty Name="Category_Id" ColumnName="Category_Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Image_Uri" ColumnName="Image_Uri" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Categories">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Product_Categories">
+              <MappingFragment StoreEntitySet="Product_Categories">
+                <ScalarProperty Name="Status_Date" ColumnName="Status_Date" />
+                <ScalarProperty Name="Status_Reason" ColumnName="Status_Reason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Image_Uri" ColumnName="Image_Uri" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Access_History">
+            <EntityTypeMapping TypeName="RobynsHandMadeSoapModel.Access_History">
+              <MappingFragment StoreEntitySet="Access_History">
+                <ScalarProperty Name="ResultSF" ColumnName="ResultSF" />
+                <ScalarProperty Name="CookiePath" ColumnName="CookiePath" />
+                <ScalarProperty Name="CookieSet" ColumnName="CookieSet" />
+                <ScalarProperty Name="OAToken" ColumnName="OAToken" />
+                <ScalarProperty Name="OACode" ColumnName="OACode" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="Attempted_URL" ColumnName="Attempted_URL" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,40 @@
+﻿@model RobynHandMadeSoap.Models.NewsModel.news
+
+<section id="editableSection" class="News_Item editedItem CurrentItem"   @if (Model != null) {
+    @:data-pkey="@Model.Id"
+}>
+    <section class="Content_Text">
+        <p class="newsDate">
+             @Model.DateString
+        </p>
+        <section id="editDetail"  contenteditable="true" class="contentEditableText"  data-name="news.Detail" >
+                @Html.Raw(@Model.DetailHTML)
+        </section>
+    <div class="newsDate" style="display:none" data-name="news.Date">
+        @Model.Date
+        </div>
+        <div class="DBImageURIText hidden">
+            <input id="pImageURI" type="text" name="pImageURI" class="hidden"  data-name-val="news.ImgURL" value="@Model.ImgURL" />
+        </div>
+    </section>
+    <section class="News_Image" style="width:170px;height:255px;position: relative;display: block;float:left;">
+        <div id="dropbox" class="dropbox" style="width: 170px;height:285px; font-size: 14pt; margin-left: 5px; margin-top: 0px; border:2pt solid grey; float: left;z-index:2;">
+            <img id="preview" src="@Model.ImgURL" alt="[ preview will display here ]" width="170" height="255"  style="font-size:10pt;  border:2pt solid grey;float: right;" />
+        
+            <span id="droplabel" style="top: 0;">Drop file here...</span>
+        </div>
+    </section>
+@*    <td style="max-width: 100px;height:80px;position: relative;">
+        <div id="dropbox" style="width: 100px;height: 150px;border:2pt solid grey;margin-left: -90px;position: absolute;margin-top: -80px;"><span id="droplabel">Drop file here...</span></div>
+        <img id="preview" alt="[ preview will display here ]" width="80" height="150" style="border:2pt solid grey;margin-left: 20px;position: absolute;margin-top: -80px;" />
+    <td style="min-width:80px">
+if (ViewContext.RouteData.Values["Action"].ToString() == "Edit") {
+        <button class="editRow">Save</button><button class="cancelEditRow">Cancel</button>
+} else {
+        <button class="createRow">Create</button><button class="cancelCreateRow">Cancel</button>
+}
+    </td>
+    </td>*@
+
+</section>
+
